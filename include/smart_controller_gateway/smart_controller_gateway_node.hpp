@@ -19,6 +19,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 #include <remote_control_msgs/msg/gamepad.hpp>
+#include <remote_control_msgs/msg/smart_ui.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 
 #include "smart_controller_gateway/network_data.hpp"
@@ -34,6 +35,7 @@ public:
 
 private:
     rclcpp::Publisher<remote_control_msgs::msg::Gamepad>::SharedPtr pub_gamepad_;
+    rclcpp::Publisher<remote_control_msgs::msg::SmartUI>::SharedPtr pub_smart_ui_;
     rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr pub_twist_;
     rclcpp::TimerBase::SharedPtr timer_;
 
@@ -44,7 +46,7 @@ private:
     network_data::smart_controller_network_data network_data_;
 
     network_data::parameter network_param;
-    gamepad_data::parameter gamepat_param;
+    gamepad_data::parameter gamepad_param;
 
 };
 } // namespace smart_controller_gateway

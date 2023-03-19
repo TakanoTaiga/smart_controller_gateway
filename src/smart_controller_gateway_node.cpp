@@ -29,19 +29,20 @@ namespace smart_controller_gateway
         // declare network parameter
         {
             network_param.network_interface = this->declare_parameter<std::string>("network_interface" , "eno1");
-            network_param.is_pubulish_twist = this->declare_parameter<bool>("is_pubulish_twist" , false);
-            network_param.is_pubulish_rc_rover = this->declare_parameter<bool>("is_pubulish_rc_rover" , false);
+            network_param.is_publish_twist = this->declare_parameter<bool>("is_publish_twist" , false);
+            network_param.is_publish_rc_rover = this->declare_parameter<bool>("is_publish_rc_rover" , false);
         }
 
         // declare gamepad parameter
         {
-            gamepat_param.button_a_label = this->declare_parameter<std::string>("button_a_label" , "buttaon a");
-            gamepat_param.button_b_label = this->declare_parameter<std::string>("button_b_label" , "buttaon b");
-            gamepat_param.slider_label = this->declare_parameter<std::string>("slider_label" , "slider");
+            gamepad_param.button_a_label = this->declare_parameter<std::string>("button_a_label" , "button a");
+            gamepad_param.button_b_label = this->declare_parameter<std::string>("button_b_label" , "butoon b");
+            gamepad_param.slider_label = this->declare_parameter<std::string>("slider_label" , "slider");
         }
 
 
         pub_gamepad_ = create_publisher<remote_control_msgs::msg::Gamepad>("~/output/gamepad", 1);
+        pub_smart_ui_ = create_publisher<remote_control_msgs::msg::SmartUI>("~/output/smartui", 1);
         pub_twist_ = create_publisher<geometry_msgs::msg::Twist>("~/output/twist" , 1);
 
         network_module::network_starter(network_data_);
@@ -81,14 +82,14 @@ namespace smart_controller_gateway
         {
             uint8_t send_buf_[128] = {0};
             send_buf_[0] = NodeConnectionKey::nodeInfoResponse;
-            auto hostname = network_module::gethostname_str().c_str();
+            const auto hostname = network_module::gethostname_str().c_str();
             memcpy(&send_buf_[1], hostname, strlen(hostname));
 
-            auto button_a = gamepat_param.button_a_label.c_str();
+            const auto button_a = gamepad_param.button_a_label.c_str();
             memcpy(&send_buf_[17], button_a, strlen(button_a));
-            auto button_b = gamepat_param.button_b_label.c_str();
+            const auto button_b = gamepad_param.button_b_label.c_str();
             memcpy(&send_buf_[33], button_b, strlen(button_b));
-            auto slider = gamepat_param.slider_label.c_str();
+            const auto slider = gamepad_param.slider_label.c_str();
             memcpy(&send_buf_[49], slider, strlen(slider));
 
             network_module::nw_send(network_data_, &send_buf_, sizeof(send_buf_));
@@ -97,15 +98,15 @@ namespace smart_controller_gateway
 
         if (*header_ptr == NodeConnectionKey::gamepadValueRequest)
         {
-            const auto gamepad_data = gamepad_modue::gamepad_data_to_msg((network_data::gamepad_rcv_data *)buffer_ptr_);
+            const auto gamepad_data = gamepad_module::gamepad_data_to_msg((network_data::gamepad_rcv_data *)buffer_ptr_);
             pub_gamepad_->publish(gamepad_data);
 
-            if(network_param.is_pubulish_twist){
-                auto pub_twist_msg = geometry_msgs::msg::Twist();
-                pub_twist_msg.linear.x = gamepad_data.left_joystic.x;
-                pub_twist_msg.linear.y = gamepad_data.left_joystic.y;
-                pub_twist_msg.angular.z = gamepad_data.right_joystic.x;
-                pub_twist_->publish(pub_twist_msg);
+            const auto smart_ui_msg = gamepad_module::smart_ui_data_to_msg((network_data::gamepad_rcv_data *)buffer_ptr_);
+            pub_smart_ui_->publish(smart_ui_msg);
+
+            if(network_param.is_publish_twist){
+                const auto twist_msg = gamepad_module::gamepad_msg_to_twist_msg(gamepad_data);
+                pub_twist_->publish(twist_msg);
             }
             return;
         }

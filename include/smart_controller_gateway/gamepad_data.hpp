@@ -63,6 +63,14 @@ namespace gamepad_data
         bool right_shoulder_button;
     };
 
+    struct smart_ui_value
+    {
+        bool button_a;
+        bool button_b;
+        float slider;
+    };
+    
+
     struct parameter{
         std::string button_a_label;
         std::string button_b_label;

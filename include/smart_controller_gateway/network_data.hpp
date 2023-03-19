@@ -58,12 +58,13 @@ namespace network_data{
     {
         uint8_t header_id;
         gamepad_data::gamepad_value gamepad_value;
+        gamepad_data::smart_ui_value smart_ui_value;
     };
 
     struct parameter{
         std::string network_interface;
-        bool is_pubulish_twist;
-        bool is_pubulish_rc_rover;
+        bool is_publish_twist;
+        bool is_publish_rc_rover;
     };
 
     namespace util
