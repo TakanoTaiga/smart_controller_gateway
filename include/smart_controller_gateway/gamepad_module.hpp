@@ -17,12 +17,20 @@
 
 #include "smart_controller_gateway/network_data.hpp"
 #include <remote_control_msgs/msg/gamepad.hpp>
+#include <remote_control_msgs/msg/smart_ui.hpp>
+#include <geometry_msgs/msg/twist.hpp>
 
-namespace gamepad_modue
+namespace gamepad_module
 {
     remote_control_msgs::msg::Gamepad 
     gamepad_data_to_msg(const network_data::gamepad_rcv_data *gamepad_data_ptr_);
 
-} //namespace gamepad_modue
+    remote_control_msgs::msg::SmartUI 
+    smart_ui_data_to_msg(const network_data::gamepad_rcv_data *gamepad_data_ptr_);
+
+    geometry_msgs::msg::Twist 
+    gamepad_msg_to_twist_msg(const remote_control_msgs::msg::Gamepad & gamepad_msg);
+
+} //namespace gamepad_module
 
 #endif

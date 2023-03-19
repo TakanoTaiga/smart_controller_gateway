@@ -14,10 +14,11 @@
 
 #include "smart_controller_gateway/gamepad_module.hpp"
 
-namespace gamepad_modue
+namespace gamepad_module
 {
     remote_control_msgs::msg::Gamepad 
-    gamepad_data_to_msg(const network_data::gamepad_rcv_data *gamepad_data_ptr_){
+    gamepad_data_to_msg(const network_data::gamepad_rcv_data *gamepad_data_ptr_)
+    {
         auto gamepad_msg = remote_control_msgs::msg::Gamepad();
         gamepad_msg.left_joystic.x = gamepad_data_ptr_->gamepad_value.left_joystic.x;
         gamepad_msg.left_joystic.y = gamepad_data_ptr_->gamepad_value.left_joystic.y;
@@ -49,5 +50,23 @@ namespace gamepad_modue
         return gamepad_msg;
     }
 
+    remote_control_msgs::msg::SmartUI 
+    smart_ui_data_to_msg(const network_data::gamepad_rcv_data *gamepad_data_ptr_)
+    {
+        auto smart_ui_msg = remote_control_msgs::msg::SmartUI();
+        smart_ui_msg.button_a = gamepad_data_ptr_->smart_ui_value.button_a;
+        smart_ui_msg.button_b = gamepad_data_ptr_->smart_ui_value.button_b;
+        smart_ui_msg.slider = gamepad_data_ptr_->smart_ui_value.slider;
+        return smart_ui_msg;
+    }
+
+    geometry_msgs::msg::Twist 
+    gamepad_msg_to_twist_msg(const remote_control_msgs::msg::Gamepad & gamepad_msg){
+        auto twist_msg = geometry_msgs::msg::Twist();
+        twist_msg.linear.x = gamepad_msg.left_joystic.x;
+        twist_msg.linear.y = gamepad_msg.left_joystic.y;
+        twist_msg.angular.z = gamepad_msg.right_joystic.x;
+        return twist_msg;
+    }
 
 } //namespace gamepad_modue

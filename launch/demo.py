@@ -9,6 +9,6 @@ def generate_launch_description():
         Node(
             package='smart_controller_gateway',
             executable='smart_controller_gateway_node',
-            #parameters=[{'network_interface' : 'wlp3s0'}],
+            parameters=[{'is_pubulish_twist' : True}],
         ),
     ])
