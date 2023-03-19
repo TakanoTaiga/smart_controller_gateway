@@ -44,24 +44,6 @@ namespace network_data{
         // Node ip address vector
         std::vector<int16_t> node_ip;
     };
-    // Node ip address vector
-    std::vector<int16_t> node_ip;
-};
-
-struct ip_response
-{
-    const uint8_t header_id = 75;
-    int16_t ip_addr_0;
-    int16_t ip_addr_1;
-    int16_t ip_addr_2;
-    int16_t ip_addr_3;
-};
-
-struct gamepad_rcv_data
-{
-    uint8_t header_id;
-    gamepad_data::gamepad_value gamepad_value;
-};
 
     struct ip_response
     {
