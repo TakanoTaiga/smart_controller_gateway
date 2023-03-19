@@ -42,6 +42,7 @@ namespace smart_controller_gateway
 
 
         pub_gamepad_ = create_publisher<remote_control_msgs::msg::Gamepad>("~/output/gamepad", 1);
+        pub_twist_ = create_publisher<geometry_msgs::msg::Twist>("~/output/twist" , 1);
 
         network_module::network_starter(network_data_);
         network_data_.node_ip = network_module::get_ip_vec(network_param.network_interface);
@@ -96,11 +97,16 @@ namespace smart_controller_gateway
 
         if (*header_ptr == NodeConnectionKey::gamepadValueRequest)
         {
-            pub_gamepad_->publish(
-                gamepad_modue::gamepad_data_to_msg(
-                    (network_data::gamepad_rcv_data *)buffer_ptr_
-                )
-            );
+            const auto gamepad_data = gamepad_modue::gamepad_data_to_msg((network_data::gamepad_rcv_data *)buffer_ptr_);
+            pub_gamepad_->publish(gamepad_data);
+
+            if(network_param.is_pubulish_twist){
+                auto pub_twist_msg = geometry_msgs::msg::Twist();
+                pub_twist_msg.linear.x = gamepad_data.left_joystic.x;
+                pub_twist_msg.linear.y = gamepad_data.left_joystic.y;
+                pub_twist_msg.angular.z = gamepad_data.right_joystic.x;
+                pub_twist_->publish(pub_twist_msg);
+            }
             return;
         }
 

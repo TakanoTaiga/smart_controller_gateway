@@ -15,9 +15,11 @@
 #ifndef SMART_CONTROLLER_GATEWAY__SMART_CONTROLLER_GATEWAY_NODE_HPP_
 #define SMART_CONTROLLER_GATEWAY__SMART_CONTROLLER_GATEWAY_NODE_HPP_
 
+#include <vector>
+
 #include <rclcpp/rclcpp.hpp>
 #include <remote_control_msgs/msg/gamepad.hpp>
-#include <vector>
+#include <geometry_msgs/msg/twist.hpp>
 
 #include "smart_controller_gateway/network_data.hpp"
 #include "smart_controller_gateway/gamepad_data.hpp"
@@ -32,6 +34,7 @@ public:
 
 private:
     rclcpp::Publisher<remote_control_msgs::msg::Gamepad>::SharedPtr pub_gamepad_;
+    rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr pub_twist_;
     rclcpp::TimerBase::SharedPtr timer_;
 
     void timer_callback(const void* buffer_ptr_);
@@ -42,7 +45,6 @@ private:
 
     network_data::parameter network_param;
     gamepad_data::parameter gamepat_param;
-
 
 };
 } // namespace smart_controller_gateway
