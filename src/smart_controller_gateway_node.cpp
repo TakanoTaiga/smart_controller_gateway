@@ -106,41 +106,6 @@ namespace smart_controller_gateway
 
         RCLCPP_WARN(get_logger(), "Received unknown header id: %d", *header_ptr);
     }
-
-    if(*header_ptr == NodeConnectionKey::gamepadValueRequest){
-        const auto gamepad_data = (network_data::gamepad_rcv_data*)buffer_ptr_;
-        auto pub_msg = remote_control_msgs::msg::Gamepad();
-
-        pub_msg.left_joystic.x = gamepad_data->gamepad_value.left_joystic.x;
-        pub_msg.left_joystic.y = gamepad_data->gamepad_value.left_joystic.y;
-        pub_msg.left_thumbstick_button = gamepad_data->gamepad_value.left_joystic.thumbstickButton;
-
-        pub_msg.right_joystic.x = gamepad_data->gamepad_value.right_joystic.x;
-        pub_msg.right_joystic.y = gamepad_data->gamepad_value.right_joystic.y;
-        pub_msg.right_thumbstick_button = gamepad_data->gamepad_value.right_joystic.thumbstickButton;
-
-        pub_msg.left_trigger.value = gamepad_data->gamepad_value.left_trigger.value;
-        pub_msg.left_trigger.button = gamepad_data->gamepad_value.left_trigger.button;
-
-        pub_msg.right_trigger.value = gamepad_data->gamepad_value.right_trigger.value;
-        pub_msg.right_trigger.button = gamepad_data->gamepad_value.right_trigger.button;
-
-        pub_msg.dpad.up = gamepad_data->gamepad_value.dpad.up;
-        pub_msg.dpad.down = gamepad_data->gamepad_value.dpad.down;
-        pub_msg.dpad.left = gamepad_data->gamepad_value.dpad.left;
-        pub_msg.dpad.right = gamepad_data->gamepad_value.dpad.right;
-
-        pub_msg.button.x = gamepad_data->gamepad_value.button.x;
-        pub_msg.button.y = gamepad_data->gamepad_value.button.y;
-        pub_msg.button.a = gamepad_data->gamepad_value.button.a;
-        pub_msg.button.b = gamepad_data->gamepad_value.button.b;
-
-        pub_msg.left_shoulder_button = gamepad_data->gamepad_value.left_shoulder_button;
-        pub_msg.right_shoulder_button = gamepad_data->gamepad_value.right_shoulder_button;
-
-        pub_gamepad_->publish(pub_msg);
-    }
-}
 }
 
 #include "rclcpp_components/register_node_macro.hpp"

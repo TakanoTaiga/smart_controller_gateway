@@ -1,0 +1,16 @@
+name: Build
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checking out
+        uses: actions/checkout@v2.3.4
+      - name: Building and testing
+        uses: TakanoTaiga/ros2-ci@v1.0.1
+        with:
+          external-repos: https://github.com/hakoroboken/AdaOS_Message.git
