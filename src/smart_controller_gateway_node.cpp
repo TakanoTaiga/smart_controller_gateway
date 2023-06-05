@@ -59,7 +59,7 @@ namespace smart_controller_gateway
     void SmartControllerGatewayNode::timer_callback(const void *buffer_ptr_)
     {
         const auto header_ptr = (uint8_t *)buffer_ptr_;
-        RCLCPP_INFO(get_logger(), "header id:%d", *header_ptr); // debug only
+        // RCLCPP_INFO(get_logger(), "header id:%d", *header_ptr); // debug only
 
         if (*header_ptr == NodeConnectionKey::searchNode)
         {
